@@ -1,0 +1,16 @@
+{
+    "links":{
+        "censo_educacao_superior":{
+            "filename": "microdados_censo_da_educacao_superior",
+            "url": "https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_{}.zip"
+        },
+        "censo-escolar":{
+            "filename": "microdados_censo_escolar",
+            "url": "https://download.inep.gov.br/dados_abertos/microdados_censo_escolar_{}.zip"
+        },
+        "enem":{
+            "filename": "microdados_enem",
+            "url": "https://download.inep.gov.br/microdados/microdados_enem_{}.zip"
+        }
+    }
+}
