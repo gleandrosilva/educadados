@@ -4,7 +4,7 @@ import os
 
 def download(url, directory):
 
-    file = requests.get(url)
+    file = requests.get(url, verify=False)
     if file.status_code == requests.codes.OK:
         with open(directory, 'wb') as new_file:
             new_file.write(file.content)
