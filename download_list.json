@@ -1,6 +1,6 @@
 {
     "links":{
-        "censo_educacao_superior":{
+        "censo-educacao-superior":{
             "filename": "microdados_censo_da_educacao_superior",
             "url": "https://download.inep.gov.br/microdados/microdados_censo_da_educacao_superior_{}.zip"
         },
