@@ -1,3 +1,7 @@
 .venv
+# arquivos baixados
 data
+# testes
 .ipynb_checkpoints
+# variavel do mysql
+.env
