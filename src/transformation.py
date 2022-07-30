@@ -1,6 +1,14 @@
+from importlib.metadata import metadata
 import os
 import zipfile as zip
+
 import pandas as pd
+
+from sqlalchemy import create_engine, Table, schema ,insert, true
+from sqlalchemy_utils import database_exists, create_database
+
+from dotenv import load_dotenv
+
 
 folder = '../data/censo-educacao-superior/'
 
@@ -37,3 +45,47 @@ name_columns = {'NU_ANO_CENSO': 'NR_ANO',
                 'QT_CONC': 'QT_CONCLUINTE_TOTAL'}
 
 ft_oferta_curso.rename(columns=name_columns, inplace=True)
+
+#configurações de database mysql
+
+load_dotenv()
+DB_USER=os.getenv('DB_USER')
+DB_PASSWORD=os.getenv('DB_PASSWORD')
+DB_HOST=os.getenv('DB_HOST')
+DB_PORT=os.getenv('DB_PORT')
+DBNAME = 'EDUCADADOS'
+
+url_db = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DBNAME}'
+
+engine = create_engine(url_db)
+if not database_exists(engine.url):
+    create_database(engine.url)
+
+engine.connect()
+
+# criando a tabela FT_OFERTA_CURSO
+engine.execute(
+    """
+    CREATE TABLE IF NOT EXISTS FT_OFERTA_CURSO (
+        `ID` INT KEY AUTO_INCREMENT,
+        `NR_ANO` INT NULL,
+        `CD_IES` INT NULL,
+        `CD_MUNICIPIO` INT NULL,
+        `CD_CURSO` VARCHAR(80) NULL,
+        `CD_GRAU_ACADEMICO` INT NULL,
+        `CD_MODALIDADE_ENSINO` INT NULL,
+        `CD_NIVEL_ACADEMICO` INT NULL,
+        `QT_OFERTA_TOTAL` INT NULL,
+        `QT_INSCRITO_TOTAL` INT NULL,
+        `QT_INGRESSANTE_TOTAL` INT NULL,
+        `QT_MATRICULA_TOTAL` INT NULL,
+        `QT_CONCLUINTE_TOTAL` INT NULL
+    );
+    """
+)
+
+# insert dos dados na tabela FT_OFERTA_CURSO
+metadata = schema.MetaData(bind=engine)
+table = Table('FT_OFERTA_CURSO', metadata, autoload=true)
+insert_rows_dict = ft_oferta_curso.to_dict(orient='records')
+engine.execute(table.insert(), insert_rows_dict)
