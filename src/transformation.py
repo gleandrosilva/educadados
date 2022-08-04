@@ -44,7 +44,7 @@ name_columns = {'NU_ANO_CENSO': 'NR_ANO',
                 'QT_CONC': 'QT_CONCLUINTE_TOTAL'}
 
 ft_oferta_curso.rename(columns=name_columns, inplace=True)
-ft_oferta_curso.fillna(0, inplace=true)
+ft_oferta_curso.fillna(0, inplace=True)
 
 #configurações de database mysql
 load_dotenv()
