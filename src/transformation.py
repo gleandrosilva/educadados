@@ -1,10 +1,9 @@
-from importlib.metadata import metadata
 import os
 import zipfile as zip
 
 import pandas as pd
 
-from sqlalchemy import create_engine, Table, schema ,insert, true
+from sqlalchemy import create_engine, Table, schema, true
 from sqlalchemy_utils import database_exists, create_database
 
 from dotenv import load_dotenv
@@ -18,7 +17,7 @@ df = pd.DataFrame()
 for file in files:
     with zip.ZipFile(folder + file, 'r') as zip_file:
         for name in zip_file.namelist():
-            if name.find('MICRODADOS_CADASTRO_CURSOS') > 0:
+            if name.find('MICRODADOS_CADASTRO_CURSOS_2020') > 0:
                 with zip_file.open(name) as csv_file:
                     df_tmp = pd.read_csv(csv_file, encoding='latin1', sep=';')
                     df = df.append(df_tmp)
@@ -45,9 +44,9 @@ name_columns = {'NU_ANO_CENSO': 'NR_ANO',
                 'QT_CONC': 'QT_CONCLUINTE_TOTAL'}
 
 ft_oferta_curso.rename(columns=name_columns, inplace=True)
+ft_oferta_curso.fillna(0, inplace=true)
 
 #configurações de database mysql
-
 load_dotenv()
 DB_USER=os.getenv('DB_USER')
 DB_PASSWORD=os.getenv('DB_PASSWORD')
